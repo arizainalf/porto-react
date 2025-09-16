@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String
+  bio       String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  educations Education[]
+  experiences Experience[]
+}
+
+model Education {
+  id        Int      @id @default(autoincrement())
+  degree    String
+  school    String
+  startYear Int
+  endYear   Int?
+  details   String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Experience {
+  id        Int      @id @default(autoincrement())
+  title     String
+  company   String
+  startYear Int
+  endYear   Int?
+  details   String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  title     String
+  description String?
+  link      String?
+  techStack String[]
+  image     String?
+
+  createdAt DateTime @default(now())
+}
+
+model Skill {
+  id    Int    @id @default(autoincrement())
+  name  String
+  level String? // e.g. Beginner, Intermediate, Advanced
+  icon  String? // simpan nama icon react-icons biar frontend bisa render
+}
